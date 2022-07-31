@@ -7,20 +7,26 @@ type Props = {
     backHref: string;
     title?: string;
     subtitle?: string;
+    invert?: boolean;
 }
-const Header = ({ backHref, subtitle, title }: Props) => {
+const Header = ({ backHref, subtitle, title, invert }: Props) => {
     const { tenant } = useAppContext()
 
     return (
         <div className={styles.container}>
             <div className={styles.leftSide}>
                 <Link href={backHref}>
-                    <BackIcon color={tenant?.mainColor} />
+                    <a className={ invert ? styles.buttonTransparent : '' }>
+                        <BackIcon color={ invert ? '#fff' : tenant?.mainColor} />
+                    </a>
                 </Link>
             </div>
             <div className={styles.centerSide}>
                 {title &&
-                    <div className={styles.title}>{title}</div>
+                    <div
+                        className={styles.title}
+                        style={{ color: invert ? '#fff': '#1b1b1b' }}
+                    >{title}</div>
                 }
                 {subtitle &&
                     <div className={styles.subtitle}>{subtitle}</div>
