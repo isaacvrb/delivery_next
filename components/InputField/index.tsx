@@ -1,7 +1,7 @@
 import EyeOn from './EyeOn.svg';
 import EyeOff from './EyeOff.svg';
 import styles from './styles.module.css';
-import { useAppContext } from '../../contexts/AppContext';
+import { useAppContext } from '../../contexts/app';
 import { useState } from 'react';
 
 type Props = {

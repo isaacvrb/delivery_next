@@ -1,5 +1,6 @@
 import { Product } from '../types/Product';
 import { Tenant } from '../types/Tenant';
+import { User } from '../types/User';
 
 const TEMPORARYoneProduct: Product = {
     id: 1,
@@ -44,6 +45,15 @@ export const useApi = (tenantSlug: string) => ({
 
     getProduct: (id: string) => {
         return TEMPORARYoneProduct;
+    },
+
+    authorizeToken: async (token: string): Promise<User | null> => {
+        if(!token) return null;
+
+        return {
+            name: 'Isaac',
+            email: 'isaacbh0297@gmail.com'
+        }
     }
 
 })

@@ -2,16 +2,19 @@ import styles from '../../../styles/Product-id.module.css';
 import { GetServerSideProps } from 'next';
 import { useApi } from '../../../libs/useApi';
 import { Tenant } from '../../../types/Tenant';
-import { useAppContext } from '../../../contexts/AppContext';
+import { useAppContext } from '../../../contexts/app';
 import { useEffect, useState } from 'react';
 import { Product } from '../../../types/Product';
 import Head from 'next/head';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import { useFormatter } from '../../../libs/useFormatter';
+import Quantaty from '../../../components/Quantaty';
 
 const Product = (data: Props) => {
     const { tenant, setTenant } = useAppContext();
+
+    const [qtCount, setQtCount] = useState(1);
 
     useEffect(() => {
         setTenant(data.tenant);
@@ -22,10 +25,14 @@ const Product = (data: Props) => {
 
     }
 
+    const handleUpdateQt = (newCount: number) => {
+        setQtCount(newCount);
+    }
+
     return (
         <div className={styles.container}>
             <Head>
-                <title>{data.product.name} | {data.tenant.name}</title>
+                <title>{data.tenant.name}</title>
             </Head>
 
             <div className={styles.headerArea}>
@@ -59,7 +66,14 @@ const Product = (data: Props) => {
             <div className={styles.qtText}>Quantidade</div>
 
             <div className={styles.area}>
-                <div className={styles.areaLeft}>...</div>
+                <div className={styles.areaLeft}>
+                    <Quantaty
+                        color={data.tenant.mainColor}
+                        count={qtCount}
+                        onUpdateCount={handleUpdateQt}
+                        min={1}
+                    />
+                </div>
                 <div
                     className={styles.areaRight}
                     style={{ color: data.tenant.mainColor }}

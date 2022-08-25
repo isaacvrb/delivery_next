@@ -1,0 +1,72 @@
+.container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    background-color: #fff;
+    z-index: 99;
+    transition: all ease .2s;
+    overflow-x: hidden;
+}
+
+.area {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    margin: 78px 24px 0 24px;
+}
+
+.header .loginArea {
+    border-bottom: 1px solid #000;
+    margin-left: 42px;
+    padding-bottom: 48px;
+    min-width: 230px;
+}
+
+.header .closeBtn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    font-size: 22px;
+}
+
+.header .userInfo {
+    font-size: 16px;
+    font-weight: 400;
+    color: #96a3ab
+}
+.header .userInfo strong {
+    display: block;
+    font-size: 24px;
+    font-weight: 500;
+    color: #1b1b1b;
+    margin-bottom: 8px;
+}
+
+.line {
+    margin:  0 24px;
+    border-bottom: 1px solid #e2e2e2;
+    margin-top: -1px;
+}
+
+.menu {
+    flex: 1;
+    padding: 25px 66px;
+    display: flex;
+    flex-direction: column;
+}
+.menuBottom {
+    padding: 25px 66px;
+    display: flex;
+    flex-direction: column;
+}

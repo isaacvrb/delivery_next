@@ -1,4 +1,4 @@
-import { useAppContext } from '../../contexts/AppContext';
+import { useAppContext } from '../../contexts/app';
 import { useApi } from '../../libs/useApi';
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
@@ -12,8 +12,10 @@ import InputField from '../../components/InputField';
 import Button from '../../components/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useAuthContext } from '../../contexts/auth';
 
 const Login = (data: Props) => {
+    const { setToken, setUser } = useAuthContext();
     const { tenant, setTenant } = useAppContext();
     const router = useRouter();
 
@@ -21,11 +23,17 @@ const Login = (data: Props) => {
         setTenant(data.tenant);
     }, []);
 
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = async () => {
-
+        setToken('1234');
+        setUser({
+            name: 'Isaac',
+            email: 'isaacbh0297@gmail.com'
+        });
+        router.push(`/${data.tenant.slug}`);
     }
     const handleSignUp = () => {
         router.push(`/${data.tenant.slug}/signup`);

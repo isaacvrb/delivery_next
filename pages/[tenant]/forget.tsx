@@ -1,4 +1,4 @@
-import { useAppContext } from '../../contexts/AppContext';
+import { useAppContext } from '../../contexts/app';
 import { useApi } from '../../libs/useApi';
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';

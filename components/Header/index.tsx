@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useAppContext } from '../../contexts/AppContext';
+import { useAppContext } from '../../contexts/app';
 import BackIcon from './backIcon.svg';
 import styles from './styles.module.css';
 
