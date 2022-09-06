@@ -24,62 +24,54 @@ const ForgetSuccess = (data: Props) => {
 
     const handleSubmit = async () => {
         router.push(`/${data.tenant.slug}/login`);
-    }
+    };
 
     return (
         <div className={styles.container}>
             <Head>
-                <title>Esqueci a senha | {data.tenant.name}</title>
+                <title>Esqueci a senha</title>
             </Head>
 
             <Header backHref={`/${data.tenant.slug}/forget`} />
 
             <div className={styles.iconArea}>
-                <Icon
-                    icon='mailSent'
-                    width={99}
-                    height={81}
-                />
+                <Icon icon="mailSent" width={99} height={81} />
             </div>
 
             <div className={styles.title}>Verifique seu e-mail</div>
 
-            <div className={styles.subtitle} >
-                Enviamos as instruções para recuperação de senha para o seu e-mail.
+            <div className={styles.subtitle}>
+                Enviamos as instruções para recuperação de senha para o seu
+                e-mail.
             </div>
 
             <div className={styles.formArea}>
-
                 <div className={styles.inputArea}>
-                    <Button
-                        label='Fazer Login'
-                        onClick={handleSubmit}
-                        fill
-                    />
+                    <Button label="Fazer Login" onClick={handleSubmit} fill />
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default ForgetSuccess;
 
 type Props = {
     tenant: Tenant;
-}
+};
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { tenant: tenantSlug } = context.query;
     const api = useApi(tenantSlug as string);
 
     // Get Tenant
     const tenant = await api.getTenant();
-    if(!tenant) {
-        return { redirect: { destination: '/', permanent: false } }
+    if (!tenant) {
+        return { redirect: { destination: '/', permanent: false } };
     }
 
     return {
         props: {
-            tenant
-        }
-    }
-}
+            tenant,
+        },
+    };
+};

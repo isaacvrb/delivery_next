@@ -25,12 +25,12 @@ const Forget = (data: Props) => {
 
     const handleSubmit = async () => {
         router.push(`/${data.tenant.slug}/forget-success`);
-    }
+    };
 
     return (
         <div className={styles.container}>
             <Head>
-                <title>Esqueci a senha | {data.tenant.name}</title>
+                <title>Esqueci a senha</title>
             </Head>
 
             <Header backHref={`/${data.tenant.slug}/login`} />
@@ -42,49 +42,47 @@ const Forget = (data: Props) => {
             <div
                 className={styles.subtitle}
                 style={{ borderBottomColor: data.tenant.mainColor }}
-            >Preencha o campo com seu e-mail e receba as instruções necessárias para redefinir  a sua senha.</div>
+            >
+                Preencha o campo com seu e-mail e receba as instruções
+                necessárias para redefinir a sua senha.
+            </div>
             <div className={styles.line}></div>
 
             <div className={styles.formArea}>
-
                 <div className={styles.inputArea}>
                     <InputField
-                        placeholder='Digite seu email'
+                        placeholder="Digite seu email"
                         value={email}
-                        onChange={(value)=>setEmail(value)}
+                        onChange={(value) => setEmail(value)}
                     />
                 </div>
 
                 <div className={styles.inputArea}>
-                    <Button
-                        label='Enviar'
-                        onClick={handleSubmit}
-                        fill
-                    />
+                    <Button label="Enviar" onClick={handleSubmit} fill />
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default Forget;
 
 type Props = {
     tenant: Tenant;
-}
+};
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { tenant: tenantSlug } = context.query;
     const api = useApi(tenantSlug as string);
 
     // Get Tenant
     const tenant = await api.getTenant();
-    if(!tenant) {
-        return { redirect: { destination: '/', permanent: false } }
+    if (!tenant) {
+        return { redirect: { destination: '/', permanent: false } };
     }
 
     return {
         props: {
-            tenant
-        }
-    }
-}
+            tenant,
+        },
+    };
+};

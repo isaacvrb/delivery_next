@@ -10,24 +10,53 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import { useFormatter } from '../../../libs/useFormatter';
 import Quantaty from '../../../components/Quantaty';
+import { CartCookie } from '../../../types/CartCookie';
+import { getCookie, hasCookie, setCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
 
 const Product = (data: Props) => {
     const { tenant, setTenant } = useAppContext();
-
-    const [qtCount, setQtCount] = useState(1);
-
     useEffect(() => {
         setTenant(data.tenant);
     }, []);
 
+    const router = useRouter();
     const formatter = useFormatter();
-    const handleAddToCart = () => {
 
-    }
+    const [qtCount, setQtCount] = useState(1);
+
+    const handleAddToCart = () => {
+        let cart: CartCookie[] = [];
+
+        // create or get existing cart
+        if (hasCookie('cart')) {
+            const cartCookie = getCookie('cart');
+            const cartJson: CartCookie[] = JSON.parse(cartCookie as string);
+            for (let i in cartJson) {
+                if (cartJson[i].qt && cartJson[i].id) {
+                    cart.push(cartJson[i]);
+                }
+            }
+        }
+
+        // search product in cart
+        const cartIndex = cart.findIndex((item) => item.id === data.product.id);
+        if (cartIndex > -1) {
+            cart[cartIndex].qt += qtCount;
+        } else {
+            cart.push({ id: data.product.id, qt: qtCount });
+        }
+
+        // setting cookie
+        setCookie('cart', JSON.stringify(cart));
+
+        // going to cart
+        router.push(`/${data.tenant.slug}/cart`);
+    };
 
     const handleUpdateQt = (newCount: number) => {
         setQtCount(newCount);
-    }
+    };
 
     return (
         <div className={styles.container}>
@@ -38,7 +67,7 @@ const Product = (data: Props) => {
             <div className={styles.headerArea}>
                 <Header
                     backHref={`/${data.tenant.slug}`}
-                    title='Produto'
+                    title="Produto"
                     invert
                 />
             </div>
@@ -49,15 +78,17 @@ const Product = (data: Props) => {
             ></div>
 
             <div className={styles.productImage}>
-                <img src={data.product.image} alt=''/>
+                <img src={data.product.image} alt="" />
             </div>
-            
+
             <div className={styles.category}>{data.product.categoryName}</div>
 
             <div
                 className={styles.title}
                 style={{ borderBottomColor: data.tenant.mainColor }}
-            >{data.product.name}</div>
+            >
+                {data.product.name}
+            </div>
 
             <div className={styles.line}></div>
 
@@ -77,44 +108,45 @@ const Product = (data: Props) => {
                 <div
                     className={styles.areaRight}
                     style={{ color: data.tenant.mainColor }}
-                >{formatter.formatPrice(data.product.price)}</div>
+                >
+                    {formatter.formatPrice(data.product.price)}
+                </div>
             </div>
 
             <div className={styles.buttonArea}>
                 <Button
-                    label='Adicionar a sacola'
+                    label="Adicionar a sacola"
                     onClick={handleAddToCart}
                     fill
                 />
             </div>
-
         </div>
     );
-}
+};
 
 export default Product;
 
 type Props = {
     tenant: Tenant;
     product: Product;
-}
+};
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { tenant: tenantSlug, id } = context.query;
     const api = useApi(tenantSlug as string);
 
     // Get Tenant
     const tenant = await api.getTenant();
-    if(!tenant) {
-        return { redirect: { destination: '/', permanent: false } }
+    if (!tenant) {
+        return { redirect: { destination: '/', permanent: false } };
     }
 
     // Get Products
-    const product = await api.getProduct(id as string);
+    const product = await api.getProduct(parseInt(id as string));
 
     return {
         props: {
             tenant,
-            product
-        }
-    }
-}
+            product,
+        },
+    };
+};
