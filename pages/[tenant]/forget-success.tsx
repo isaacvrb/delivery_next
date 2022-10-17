@@ -35,7 +35,12 @@ const ForgetSuccess = (data: Props) => {
             <Header backHref={`/${data.tenant.slug}/forget`} />
 
             <div className={styles.iconArea}>
-                <Icon icon="mailSent" width={99} height={81} />
+                <Icon
+                    color={tenant?.mainColor ? tenant.mainColor : ''}
+                    icon="mailSent"
+                    width={99}
+                    height={81}
+                />
             </div>
 
             <div className={styles.title}>Verifique seu e-mail</div>

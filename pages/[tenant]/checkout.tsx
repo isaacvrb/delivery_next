@@ -1,4 +1,4 @@
-import styles from '../../styles/Cart.module.css';
+import styles from '../../styles/Checkout.module.css';
 import { GetServerSideProps } from 'next';
 import { useApi } from '../../libs/useApi';
 import { Tenant } from '../../types/Tenant';
@@ -16,8 +16,9 @@ import { CartItem } from '../../types/CartItem';
 import { useRouter } from 'next/router';
 import CartProductItem from '../../components/CartProductItem';
 import { CartCookie } from '../../types/CartCookie';
+import ButtonWithIcon from '../../components/ButtonWithIcon';
 
-const Cart = (data: Props) => {
+const Checkout = (data: Props) => {
     const { setToken, setUser } = useAuthContext();
     const { tenant, setTenant } = useAppContext();
 
@@ -82,13 +83,47 @@ const Cart = (data: Props) => {
         router.push(`/${data.tenant.slug}/checkout`);
     };
 
+    const handleChangeAddress = () => {
+        console.log('Indo para tela de endereço....');
+    };
+
     return (
         <div className={styles.container}>
             <Head>
-                <title>Sacola</title>
+                <title>Checkout</title>
             </Head>
 
-            <Header backHref={`/${data.tenant.slug}`} title="Sacola" />
+            <Header backHref={`/${data.tenant.slug}`} title="Checkout" />
+
+            <div className={styles.infoGroup}>
+                <div className={styles.infoArea}>
+                    <div className={styles.infoTitle}>Endereço</div>
+                    <div className={styles.infoBody}>
+                        <ButtonWithIcon
+                            color={data.tenant.mainColor}
+                            leftIcon="location"
+                            rightIcon="rightArrow"
+                            value="Rua bla bla bla, 111 Rua bla bla bla, 111 Rua bla bla bla, 111"
+                            onClick={handleChangeAddress}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.infoArea}>
+                    <div className={styles.infoTitle}>Tipo de pagamento</div>
+                    <div className={styles.infoBody}>...</div>
+                </div>
+
+                <div className={styles.infoArea}>
+                    <div className={styles.infoTitle}>Troco</div>
+                    <div className={styles.infoBody}>...</div>
+                </div>
+
+                <div className={styles.infoArea}>
+                    <div className={styles.infoTitle}>Cupon de desconto</div>
+                    <div className={styles.infoBody}>...</div>
+                </div>
+            </div>
 
             <div className={styles.productsQuantity}>
                 {cart.length} {cart.length === 1 ? 'item' : 'itens'}
@@ -173,7 +208,7 @@ const Cart = (data: Props) => {
     );
 };
 
-export default Cart;
+export default Checkout;
 
 type Props = {
     tenant: Tenant;
