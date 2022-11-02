@@ -20,6 +20,21 @@
     margin-bottom: 8px;
 }
 
+.paymentTypes {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.paymentTypes .paymentBtn {
+    flex: 1;
+}
+
+.cupomInput {
+    display: flex;
+    gap: 14px;
+}
+
 .productsQuantity {
     border-top: 1px solid rgba(27, 27, 27, 0.1);
     border-bottom: 1px solid rgba(27, 27, 27, 0.1);
