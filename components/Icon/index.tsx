@@ -5,29 +5,35 @@ import Location from './location.svg';
 import MailSent from './mailSent.svg';
 import Money from './money.svg';
 import RightArrow from './rightArrow.svg';
+import Dots from './dots.svg';
+import Edit from './edit.svg';
+import Delete from './delete.svg';
 
 import { useAppContext } from '../../contexts/app';
 
 type Props = {
-    color: string;
-    icon: string;
-    width: number;
-    height: number;
+  color: string;
+  icon: string;
+  width: number;
+  height: number;
 };
 const Icon = ({ color, icon, width, height }: Props) => {
-    const { tenant } = useAppContext();
+  const { tenant } = useAppContext();
 
-    return (
-        <div style={{ width, height }}>
-            {icon === 'card' && <Card color={color} />}
-            {icon === 'checked' && <Checked color={color} />}
-            {icon === 'cupon' && <Cupon color={color} />}
-            {icon === 'location' && <Location color={color} />}
-            {icon === 'mailSent' && <MailSent color={color} />}
-            {icon === 'money' && <Money color={color} />}
-            {icon === 'rightArrow' && <RightArrow color={color} />}
-        </div>
-    );
+  return (
+    <div style={{ width, height }}>
+      {icon === 'card' && <Card color={color} />}
+      {icon === 'checked' && <Checked color={color} />}
+      {icon === 'cupon' && <Cupon color={color} />}
+      {icon === 'location' && <Location color={color} />}
+      {icon === 'mailSent' && <MailSent color={color} />}
+      {icon === 'money' && <Money color={color} />}
+      {icon === 'rightArrow' && <RightArrow color={color} />}
+      {icon === 'dots' && <Dots color={color} />}
+      {icon === 'edit' && <Edit color={color} />}
+      {icon === 'delete' && <Delete color={color} />}
+    </div>
+  );
 };
 
 export default Icon;
