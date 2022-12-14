@@ -4,13 +4,11 @@ import { useApi } from '../../libs/useApi';
 import { Tenant } from '../../types/Tenant';
 import { useAppContext } from '../../contexts/app';
 import { useEffect, useState } from 'react';
-import { getCookie, setCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import { User } from '../../types/User';
 import { useAuthContext } from '../../contexts/auth';
 import Head from 'next/head';
 import Header from '../../components/Header';
-import { useFormatter } from '../../libs/useFormatter';
-import { CartItem } from '../../types/CartItem';
 import { useRouter } from 'next/router';
 import Button from '../../components/Button';
 import { Address } from '../../types/Address';
@@ -18,7 +16,7 @@ import AddressItem from '../../components/AddressItem';
 
 const MyAddresses = (data: Props) => {
   const { setToken, setUser } = useAuthContext();
-  const { tenant, setTenant } = useAppContext();
+  const { tenant, setTenant, setShippingAddress, setShippingPrice } = useAppContext();
 
   useEffect(() => {
     setTenant(data.tenant);
@@ -26,23 +24,28 @@ const MyAddresses = (data: Props) => {
     if (data.user) setUser(data.user);
   }, []);
 
-  const formatter = useFormatter();
   const router = useRouter();
+  const api = useApi(data.tenant.slug);
 
-  const handleNewAddress = () => {
-    router.push(`/${data.tenant.slug}/checkout`);
-  };
-
-  const handleAddressSelect = (address: Address) => {
-    console.log(`Selecionou o endereço: ${address.street} ${address.number}`);
+  const handleAddressSelect = async (address: Address) => {
+    const price = await api.getShippingPrice(address);
+    if (price) {
+      setShippingAddress(address);
+      setShippingPrice(price);
+      router.push(`/${data.tenant.slug}/checkout`);
+    }
   };
 
   const handleAddressEdit = (id: number) => {
-    console.log(`Editando o ${id}`);
+    router.push(`/${data.tenant.slug}/address/${id}`);
   };
 
   const handleAddressDelete = (id: number) => {
     console.log(`Deletando o ${id}`);
+  };
+
+  const handleNewAddress = () => {
+    router.push(`/${data.tenant.slug}/address/new`);
   };
 
   // Menu Events

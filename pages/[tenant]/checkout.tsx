@@ -4,7 +4,7 @@ import { useApi } from '../../libs/useApi';
 import { Tenant } from '../../types/Tenant';
 import { useAppContext } from '../../contexts/app';
 import { useEffect, useState } from 'react';
-import { getCookie, setCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import { User } from '../../types/User';
 import { useAuthContext } from '../../contexts/auth';
 import Head from 'next/head';
@@ -15,13 +15,11 @@ import { useFormatter } from '../../libs/useFormatter';
 import { CartItem } from '../../types/CartItem';
 import { useRouter } from 'next/router';
 import CartProductItem from '../../components/CartProductItem';
-import { CartCookie } from '../../types/CartCookie';
 import ButtonWithIcon from '../../components/ButtonWithIcon';
-import { Address } from '../../types/Address';
 
 const Checkout = (data: Props) => {
   const { setToken, setUser } = useAuthContext();
-  const { tenant, setTenant } = useAppContext();
+  const { tenant, setTenant, shippingAddress, shippingPrice } = useAppContext();
 
   useEffect(() => {
     setTenant(data.tenant);
@@ -36,9 +34,6 @@ const Checkout = (data: Props) => {
   const [cart, setCart] = useState<CartItem[]>(data.cart);
 
   // Shipping
-  const [shippingPrice, setShippingPrice] = useState(0);
-  const [shippingAddress, setShippingAddress] = useState<Address>();
-
   const handleChangeAddress = () => {
     router.push(`/${data.tenant.slug}/myaddresses`);
 

@@ -1,24 +1,29 @@
-import { Dispatch, ReactNode } from "react";
-import { Tenant } from "../../types/Tenant"
+import { Dispatch, ReactNode } from 'react';
+import { Address } from '../../types/Address';
+import { Tenant } from '../../types/Tenant';
 
 export type DataType = {
-    tenant: Tenant | null;
-}
+  tenant: Tenant | null;
+  shippingAddress: Address | null;
+  shippingPrice: number;
+};
 
 export type ActionType = {
-    type: Actions;
-    payload?: any;
-}
+  type: Actions;
+  payload?: any;
+};
 
 export type ContextType = {
-    state: DataType;
-    dispatch: Dispatch<ActionType>;
-}
+  state: DataType;
+  dispatch: Dispatch<ActionType>;
+};
 
 export type ProviderType = {
-    children: ReactNode
-}
+  children: ReactNode;
+};
 
 export enum Actions {
-    SET_TENANT
+  SET_TENANT,
+  SET_SHIPPING_ADDRESS,
+  SET_SHIPPING_PRICE,
 }
