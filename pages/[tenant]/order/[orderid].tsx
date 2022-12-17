@@ -32,6 +32,38 @@ const OrderID = (data: Props) => {
   const router = useRouter();
   const api = useApi(data.tenant.slug);
 
+  useEffect(() => {
+    if (data.order.status !== 'delivered') {
+      setTimeout(() => {
+        router.reload();
+      }, 60000); // 60 seconds
+    }
+  }, []);
+
+  const orderStatusList = {
+    preparing: {
+      label: 'Preparando',
+      longLabel: 'Preparando seu pedido...',
+      backgroundColor: '#fefae6',
+      fontColor: '#d4bc34',
+      pct: 25,
+    },
+    sent: {
+      label: 'Enviado',
+      longLabel: 'Enviamos o seu pedido!',
+      backgroundColor: '#f1f3f8',
+      fontColor: '#758cbc',
+      pct: 75,
+    },
+    delivered: {
+      label: 'Entregue',
+      longLabel: 'Seu pedido foi entrege',
+      backgroundColor: '#f1f8f6',
+      fontColor: '#6ab70a',
+      pct: 100,
+    },
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -39,6 +71,59 @@ const OrderID = (data: Props) => {
       </Head>
 
       <Header backHref={`/${data.tenant.slug}`} title={`Pedido #${data.order.id}`} />
+
+      {data.order.status !== 'delivered' && (
+        <div
+          className={styles.statusArea}
+          style={{ backgroundColor: orderStatusList[data.order.status].backgroundColor }}
+        >
+          <div
+            className={styles.statusLongLabel}
+            style={{ color: orderStatusList[data.order.status].fontColor }}
+          >
+            {orderStatusList[data.order.status].longLabel}
+          </div>
+          <div className={styles.statusPct}>
+            <div
+              className={styles.statusPctBar}
+              style={{
+                width: `${orderStatusList[data.order.status].pct}%`,
+                backgroundColor: orderStatusList[data.order.status].fontColor,
+              }}
+            ></div>
+          </div>
+          <div className={styles.statusMsg}>Aguardando mudança de status...</div>
+        </div>
+      )}
+
+      <div className={styles.orderInfoArea}>
+        <div
+          className={styles.orderInfoStatus}
+          style={{
+            backgroundColor: orderStatusList[data.order.status].backgroundColor,
+            color: orderStatusList[data.order.status].fontColor,
+          }}
+        >
+          {orderStatusList[data.order.status].label}
+        </div>
+        <div className={styles.orderInfoQt}>
+          {data.order.products.length} {data.order.products.length === 1 ? 'item' : 'itens'}
+        </div>
+        <div className={styles.orderInfoDate}>{formatter.formatDate(data.order.orderDate)}</div>
+      </div>
+
+      <div className={styles.productsList}>
+        {data.order.products.map((cartItem, index) => (
+          <CartProductItem
+            key={index}
+            color={data.tenant.mainColor}
+            quantity={cartItem.qt}
+            product={cartItem.product}
+            onChange={() => {}}
+            noEdit
+          />
+        ))}
+      </div>
 
       <div className={styles.infoGroup}>
         <div className={styles.infoArea}>
@@ -106,23 +191,6 @@ const OrderID = (data: Props) => {
             </div>
           </div>
         )}
-      </div>
-
-      <div className={styles.productsQuantity}>
-        {data.order.products.length} {data.order.products.length === 1 ? 'item' : 'itens'}
-      </div>
-
-      <div className={styles.productsList}>
-        {data.order.products.map((cartItem, index) => (
-          <CartProductItem
-            key={index}
-            color={data.tenant.mainColor}
-            quantity={cartItem.qt}
-            product={cartItem.product}
-            onChange={() => {}}
-            noEdit
-          />
-        ))}
       </div>
 
       <div className={styles.resumeArea}>
