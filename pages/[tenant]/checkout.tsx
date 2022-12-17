@@ -29,6 +29,7 @@ const Checkout = (data: Props) => {
 
   const formatter = useFormatter();
   const router = useRouter();
+  const api = useApi(data.tenant.slug);
 
   // Product Control
   const [cart, setCart] = useState<CartItem[]>(data.cart);
@@ -36,19 +37,6 @@ const Checkout = (data: Props) => {
   // Shipping
   const handleChangeAddress = () => {
     router.push(`/${data.tenant.slug}/myaddresses`);
-
-    /*
-    setShippingAddress({
-      id: 1,
-      cep: '99999-999',
-      street: 'Rua das Flores',
-      number: '321',
-      neighborhood: 'Jardins',
-      city: 'São Paulo',
-      state: 'SP',
-    });
-    setShippingPrice(9.5);
-    */
   };
 
   //Payments
@@ -77,8 +65,15 @@ const Checkout = (data: Props) => {
     setSubtotal(sub);
   }, [cart]);
 
-  const handleFinish = () => {
-    // router.push(`/${data.tenant.slug}/checkout`);
+  const handleFinish = async () => {
+    if (shippingAddress) {
+      const order = await api.setOrder(shippingAddress, paymentType, paymentChange, cupom, data.cart);
+      if (order) {
+        router.push(`/${data.tenant.slug}/order/${order.id}`);
+      } else {
+        alert('Ocorreu um erro! Tente mais tarde!');
+      }
+    }
   };
 
   return (
